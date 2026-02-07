@@ -4,6 +4,7 @@
 
 #include "hal.h"
 #include "mongoose/mongoose_glue.h"
+#include "sens.h"
 
 int main(void) {
   // Cross-platform hardware init
@@ -13,6 +14,9 @@ int main(void) {
   // This blocks forever. Call it at the end of main(), or in a
   // separate RTOS task. Give that task 8k stack space.
   mongoose_init();
+  mongoose_set_http_handlers("data", sens_get_data, NULL);
+  mongoose_add_ws_reporter(1000, "data");
+  mongoose_set_http_handlers("enable", sens_get_enable, sens_set_enable);
 
   for (;;) {
     mongoose_poll();
