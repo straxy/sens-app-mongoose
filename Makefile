@@ -2,7 +2,7 @@
 # Environment setup: https://mongoose.ws/documentation/tutorials/tools/
 
 SOURCES = main.c sens.c $(wildcard mongoose/*.c)
-CFLAGS = -W -Wall -Wextra -Werror -Wundef -Wshadow -g3 -O0 -I. -Imongoose
+CFLAGS = -W -Wall -Wextra -Werror -Wundef -Wshadow -g3 -Os -I. -Imongoose
 CFLAGS += -Wno-cast-function-type
 MFLAGS = -DMG_DATA_SIZE=64 -DMG_ENABLE_PACKED_FS=1 -DMG_TLS=MG_TLS_BUILTIN
 
