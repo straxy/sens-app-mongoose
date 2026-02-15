@@ -7,7 +7,7 @@
 
 #if !defined(HTTP_URL) && !defined(HTTPS_URL)
 #if MG_ARCH == MG_ARCH_UNIX || MG_ARCH == MG_ARCH_WIN32
-#define HTTP_URL "http://0.0.0.0:8080"
+#define HTTP_URL "http://0.0.0.0:8081"
 #define HTTPS_URL "https://0.0.0.0:8443"
 #else
 #define HTTP_URL "http://0.0.0.0:80"
