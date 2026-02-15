@@ -11,9 +11,5 @@ build: $(SOURCES)
 	$(CC) $(SOURCES) $(CFLAGS) $(MFLAGS) $(CFLAGS_EXTRA) -o firmware
 	cp firmware firmware.bin
 
-windows: $(PROG)
-	cl /MD /Os /W3 /nologo $(SOURCES) $(MFLAGS) $(CFLAGS_EXTRA) /Fefirmware.exe
-	copy firmware.exe firmware.bin
-
-run:
-	nodemon --exec "make && ./firmware || true" -w . -e c,h
+clean:
+	rm -f firmware firmware.bin
