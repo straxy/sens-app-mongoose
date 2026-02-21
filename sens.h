@@ -10,33 +10,35 @@
 #include "mongoose/mongoose_glue.h"
 
 /**
- * @brief Function to get data from the sensing system.
+ * @brief Get the current data from custom QEMU sensors.
  *
- * This function retrieves data from the sensing system and stores it in the
- * provided struct.
+ * This function reads the current data value from the sysfs files
+ * associated with I2C, SPI, and MMSens devices.
  *
- * @param data Pointer to a struct where the retrieved data will be stored.
+ * @param data A pointer to the struct data containing the sensor data
+ * values.
  */
 extern void sens_get_data(struct data *data);
 
 /**
- * @brief Function to get the current enable state of the sensing system.
+ * @brief Get the enable state for custom QEMU sensors.
  *
- * This function retrieves the current enable state from the sensing system and
- * stores it in the provided struct.
+ * This function reads the enable state from the sysfs files
+ * associated with I2C, SPI, and MMSens devices.
  *
- * @param data Pointer to a struct where the retrieved enable state will be
- * stored.
+ * @param data A pointer to the struct enable containing the sensor enable
+ * states.
  */
 extern void sens_get_enable(struct enable *data);
 
 /**
- * @brief Function to set the enable state of the sensing system.
+ * @brief Set the enable status for custom QEMU sensors.
  *
- * This function sets the enable state of the sensing system based on the
- * provided data.
+ * This function is responsible for setting the enable status of I2C, SPI, and
+ * MMSens sensors based on the provided data structure.
  *
- * @param data Pointer to a struct containing the new enable state.
+ * @param data Pointer to a struct containing the enable statuses for different
+ * sensors.
  */
 extern void sens_set_enable(struct enable *data);
 

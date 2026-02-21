@@ -6,6 +6,18 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
+/**
+ * Read data from a sysfs file.
+ *
+ * This function opens a sysfs file, reads its contents,
+ * and closes the file.  It returns the number of bytes read
+ * or a negative value if an error occurred.
+ *
+ * @param device The path to the sysfs file.
+ * @param buffer A buffer to store the data read from the file.
+ * @param size The maximum number of bytes to read.
+ * @return The number of bytes read, or a negative value on error.
+ */
 static ssize_t read_sysfs(char *device, char *buffer, ssize_t size) {
   ssize_t len = 0;
   int fd = open(device, O_RDONLY);
@@ -62,6 +74,18 @@ static bool read_enable_sysfs(char *device) {
   return false;
 }
 
+/**
+ * @brief Write data to a specified sysfs file.
+ *
+ * This function enables writing of data to a sysfs file,
+ * allowing interaction with kernel subsystems.
+ *
+ * @param device The name of the sysfs file to write to.
+ * @param buffer A pointer to the data to be written to the sysfs file.
+ * @param size The number of bytes to write from the buffer.
+ * @return The number of bytes successfully written to the sysfs file,
+ *         or -1 if an error occurred during the operation.
+ */
 static ssize_t write_sysfs(char *device, char *buffer, ssize_t size) {
   int fd = open(device, O_RDWR);
   ssize_t len = -1;
@@ -81,6 +105,12 @@ static ssize_t write_sysfs(char *device, char *buffer, ssize_t size) {
   return len;
 }
 
+/**
+ * Write the enable state to the sysfs file for a given device.
+ *
+ * @param device The sysfs file path to the device.
+ * @param enable True to enable the device, false to disable.
+ */
 static void write_enable_sysfs(char *device, bool enable) {
   char buf[2] = {0};
   buf[0] = enable ? '1' : '0';
@@ -88,7 +118,10 @@ static void write_enable_sysfs(char *device, bool enable) {
   write_sysfs(device, buf, sizeof(buf));
 }
 
-// glue data
+// Public functions
+
+//----------------------------------------------------------------------------------
+
 void sens_get_data(struct data *data) {
   struct data s_data = {.i2c = 127500, .spi = 127500, .mm = 0};
   bool valid = false;
@@ -114,27 +147,18 @@ void sens_get_data(struct data *data) {
 
   *data = s_data;
 }
-// glue enable
-void sens_get_enable(struct enable *data) {
-  printf("Called get enable\n");
 
+//----------------------------------------------------------------------------------
+
+void sens_get_enable(struct enable *data) {
   data->i2c = read_enable_sysfs("/sys/bus/i2c/devices/1-0036/enable");
   data->spi = read_enable_sysfs("/sys/bus/spi/devices/spi0.0/enable");
   data->mm = read_enable_sysfs("/sys/class/mmsens/mmsens0/enable");
 }
 
-/**
- * @brief Set the enable status for various sensors.
- *
- * This function is responsible for setting the enable status of I2C, SPI, and
- * MMSens sensors based on the provided data structure.
- *
- * @param data Pointer to a struct containing the enable statuses for different
- * sensors.
- */
-void sens_set_enable(struct enable *data) {
-  printf("Called set enable\n");
+//----------------------------------------------------------------------------------
 
+void sens_set_enable(struct enable *data) {
   write_enable_sysfs("/sys/bus/i2c/devices/1-0036/enable", data->i2c);
   write_enable_sysfs("/sys/bus/spi/devices/spi0.0/enable", data->spi);
   write_enable_sysfs("/sys/class/mmsens/mmsens0/enable", data->mm);
